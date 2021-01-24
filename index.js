@@ -1,7 +1,7 @@
 require("dotenv").config()
 const express = require("express")
 const mongoose = require("mongoose")
-const cors = require("cors")
+const cors = require("cors") 
 
 
 const port = process.env.PORT || 4000
@@ -19,10 +19,14 @@ db.once("open", () => console.log("Conneceted to Database"))
 app.use(cors())
 app.use(express.json())
 
-const productRoutes = require("./routes/products")
 const adminRoutes = require("./routes/admins")
+const productRoutes = require("./routes/products")
+const carouselImgsRoutes  = require("./routes/about-page-carousel")
 
+app.use("/", adminRoutes)
 app.use("/", productRoutes)
-app.use("/admin", adminRoutes)
+app.use("/", carouselImgsRoutes)
+
 
 app.listen(port, () => console.log(`server listening on port ${port}`))
+

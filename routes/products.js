@@ -32,12 +32,12 @@ router.post("/", async (req, res) => {
 })
 
 // Get one product 
-router.get("/:id", getProduct, (req, res) => {
+router.get("/product/:id", getProduct, (req, res) => {
     res.send(res.product)
 })
 
 // Patch product
-router.patch("/:id", getProduct, async (req, res) => {
+router.patch("/product/:id", getProduct, async (req, res) => {
     if(req.body.name != null){
         res.product.name = req.body.name
     }
@@ -66,7 +66,7 @@ router.patch("/:id", getProduct, async (req, res) => {
 })
 
 // Delete product 
-router.delete("/:id", getProduct, async (req, res) => {
+router.delete("/product/:id", getProduct, async (req, res) => {
     try {
         await res.product.remove()
         res.json({message: `${res.product.name} has been deleted from database`})
