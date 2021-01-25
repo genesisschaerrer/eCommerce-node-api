@@ -1,6 +1,7 @@
 const express = require("express")
 const router = express.Router()
 
+const verify = require("../verify-token")
 const carouselImgs = require("../models/carousel-model")
 
 // Get all images
@@ -14,7 +15,7 @@ router.get("/about", async (req, res) => {
 })
 
 // Post new image
-router.post("/about", (req, res) => {
+router.post("/about", verify, (req, res) => {
     const newCarouselImg = new carouselImgs(req.body)
 
     newCarouselImg.save()

@@ -1,6 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
 
 const Admins = require("../models/admin-model")
 // const { route } = require("./products")
@@ -47,7 +48,9 @@ router.post("/adminlogin", async (req, res) => {
             return res.status(400).send.json({messege: "invalid password"})
         } 
     
-        return res.status(200).json({messege: "Logged In"})
+        const token = jwt.sign({_id: admin._id}, process.env.TOKEN_SECRET)
+
+        res.status(200).header("auth-token", token).send(token)
     
 })
 
