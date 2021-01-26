@@ -2,9 +2,9 @@ const express = require("express")
 const router = express.Router()
 
 const Products = require("../models/product-model")
-
+const verifyToken = require("../verify-token")
 // Get all products
-router.get("/", async (req, res) => {
+router.get("/", verifyToken, async (req, res) => {
     try {
         const products = await Products.find()
         res.json(products)
@@ -64,6 +64,8 @@ router.patch("/product/:id", getProduct, async (req, res) => {
         res.status(400).json({message: error.message})
     }
 })
+
+//TODO patch checkout route
 
 // Delete product 
 router.delete("/product/:id", getProduct, async (req, res) => {

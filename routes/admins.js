@@ -4,7 +4,6 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 
 const Admins = require("../models/admin-model")
-// const { route } = require("./products")
 
 
 //Create new admin
@@ -39,20 +38,39 @@ router.delete("/adminschaerrer/delete/:id", async(req, res) => {
 //Login
 router.post("/adminlogin", async (req, res) => {
         const admin = await Admins.findOne({username: req.body.username, email: req.body.email})
+
         if(!admin){
            return res.status(400).json({messege: "username or email not found"})
         }
 
         const validPassword = await bcrypt.compare(req.body.password, admin.password)
+
         if(!validPassword){
             return res.status(400).send.json({messege: "invalid password"})
         } 
     
         const token = jwt.sign({_id: admin._id}, process.env.TOKEN_SECRET)
+        // fetch("/wshea", {
+        //     method: "POST",
+        //     headers: {
+        //         "auth-token": localStorage.get("auth-token")
+        //     }
+        // })
 
-        res.status(200).header("auth-token", token).send(token)
+        // fetch("/login", {
+        //     method: "POST",
+        //     body: JSON.stringify({ email: "kaldsjf;s", password: "dkjfsldkajf"})
+        // })
+        //  .then(res => {
+        //     localStorage.set(res.headers["auth-token"])
+        //  } )
+        //  .then()
+
+        res.header("auth-token", token).send(token)
     
 })
+
+// fetch("/login", {method: "post", body: JSON.stringify({ email: this.state.email })}).then(res => document.cookie = `token=${res.headers.auth-token}`;
 
 
 module.exports = router

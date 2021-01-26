@@ -8,7 +8,9 @@ module.exports = function(req, res, next){
     try {
         const verified = jwt.verify(token, process.env.TOKEN_SECRET)
         req.admin = verified
+        next()
     } catch (error) {
         res.status(400).json({messege: error.messege})
     }
+
 }
