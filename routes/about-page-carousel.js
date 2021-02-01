@@ -15,7 +15,7 @@ router.get("/about", async (req, res) => {
 })
 
 // Post new image
-router.post("/about", verify, (req, res) => {
+router.post("/about", (req, res) => {
     const newCarouselImg = new carouselImgs(req.body)
 
     newCarouselImg.save()

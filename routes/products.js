@@ -4,7 +4,7 @@ const router = express.Router()
 const Products = require("../models/product-model")
 const verifyToken = require("../verify-token")
 // Get all products
-router.get("/", verifyToken, async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const products = await Products.find()
         res.json(products)
@@ -36,7 +36,7 @@ router.get("/product/:id", getProduct, (req, res) => {
     res.send(res.product)
 })
 
-// Patch product
+//Admin Patch product
 router.patch("/product/:id", getProduct, async (req, res) => {
     if(req.body.name != null){
         res.product.name = req.body.name
@@ -65,7 +65,50 @@ router.patch("/product/:id", getProduct, async (req, res) => {
     }
 })
 
-//TODO patch checkout route
+// router.patch("/purchase/update-inventory", async(req, res) => {
+//     try {
+//       await req.body.forEach(item => {  
+//             Products.findById(item._id, async (err, doc) => {
+//                 if(err){
+//                     res.status(400).send({item})
+//                 }
+//                 doc.inventory = doc.inventory - 1
+//                 await doc.save()
+//             })
+//         })
+
+//         res.json({message: "OK"})
+//     }
+//     catch(error) {
+//         res.status(400).json({message: error.message})
+//     }
+// })
+
+router.patch("/purchase/update-inventory", async(req, res) => {
+    try {
+        // Object with counts per id
+        const counts = {} 
+
+        req.body.forEach(item => {  
+            // Create key value pair for each id
+            counts[item._id] = counts[item._id] ? counts[item._id] + 1 : 1
+            // add to count per id
+        })
+
+        Object.keys(counts).forEach(id => {
+            Products.findById(id, (err, doc) => {
+                doc.inventory = doc.inventory - counts[id]
+                doc.save()
+            })
+        })
+
+
+        res.json({message: "OK"})
+    }
+    catch(error) {
+        res.status(400).json({message: error.message})
+    }
+})
 
 // Delete product 
 router.delete("/product/:id", getProduct, async (req, res) => {
