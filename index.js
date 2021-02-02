@@ -2,10 +2,12 @@ require("dotenv").config()
 const express = require("express")
 const mongoose = require("mongoose")
 const cors = require("cors") 
+const cookieParser = require("cookie-parser")
 
 
 const port = process.env.PORT || 4000
 const app = express()
+
 
 mongoose.connect(
     process.env.MONGODB_URI,
@@ -17,9 +19,11 @@ db.once("open", () => console.log("Conneceted to Database"))
 
 
 app.use(cors({
-    exposedHeaders: "auth-token"
+    exposedHeaders: "auth-token",
+    origin: ["https://gms-ecommerce-client-react.herokuapp.com/", "http://localhost:3000"]
 }))
 app.use(express.json())
+app.use(cookieParser())
 
 const adminRoutes = require("./routes/admins")
 const productRoutes = require("./routes/products")
