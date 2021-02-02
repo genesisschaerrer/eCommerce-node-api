@@ -15,7 +15,7 @@ router.get("/about", async (req, res) => {
 })
 
 // Post new image
-router.post("/about", (req, res) => {
+router.post("/about", verify, (req, res) => {
     const newCarouselImg = new carouselImgs(req.body)
 
     newCarouselImg.save()
@@ -29,7 +29,7 @@ router.post("/about", (req, res) => {
 })
 
 //Delete image
-router.delete("/about/:id", (req, res) => {
+router.delete("/about/:id", verify, (req, res) => {
     carouselImgs.findByIdAndDelete(req.params.id, (error, carouselImg) => {
         if(error){
             res.status(404).json({messege: error.messege})

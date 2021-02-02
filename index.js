@@ -16,7 +16,9 @@ db.on("error", (error) => console.log(error))
 db.once("open", () => console.log("Conneceted to Database"))
 
 
-app.use(cors())
+app.use(cors({
+    exposedHeaders: "auth-token"
+}))
 app.use(express.json())
 
 const adminRoutes = require("./routes/admins")

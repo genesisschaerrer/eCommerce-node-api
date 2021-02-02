@@ -2,7 +2,8 @@ const express = require("express")
 const router = express.Router()
 
 const Products = require("../models/product-model")
-const verifyToken = require("../verify-token")
+const verify = require("../verify-token")
+
 // Get all products
 router.get("/", async (req, res) => {
     try {
@@ -14,7 +15,7 @@ router.get("/", async (req, res) => {
 })
 
 // Add new product
-router.post("/", async (req, res) => {
+router.post("/", verify, async (req, res) => {
     const product = new Products({
         name: req.body.name,
         description: req.body.description,
@@ -37,7 +38,7 @@ router.get("/product/:id", getProduct, (req, res) => {
 })
 
 //Admin Patch product
-router.patch("/product/:id", getProduct, async (req, res) => {
+router.patch("/product/:id", verify, getProduct, async (req, res) => {
     if(req.body.name != null){
         res.product.name = req.body.name
     }
@@ -64,25 +65,6 @@ router.patch("/product/:id", getProduct, async (req, res) => {
         res.status(400).json({message: error.message})
     }
 })
-
-// router.patch("/purchase/update-inventory", async(req, res) => {
-//     try {
-//       await req.body.forEach(item => {  
-//             Products.findById(item._id, async (err, doc) => {
-//                 if(err){
-//                     res.status(400).send({item})
-//                 }
-//                 doc.inventory = doc.inventory - 1
-//                 await doc.save()
-//             })
-//         })
-
-//         res.json({message: "OK"})
-//     }
-//     catch(error) {
-//         res.status(400).json({message: error.message})
-//     }
-// })
 
 router.patch("/purchase/update-inventory", async(req, res) => {
     try {
@@ -111,7 +93,7 @@ router.patch("/purchase/update-inventory", async(req, res) => {
 })
 
 // Delete product 
-router.delete("/product/:id", getProduct, async (req, res) => {
+router.delete("/product/:id", verify, getProduct, async (req, res) => {
     try {
         await res.product.remove()
         res.json({message: `${res.product.name} has been deleted from database`})

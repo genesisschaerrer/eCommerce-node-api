@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 
 const Admins = require("../models/admin-model")
-
+const verifyToken = require("../verify-token")
 
 //Create new admin
 router.post("/adminschaerrer/register", async(req, res)=> {
@@ -46,7 +46,7 @@ router.post("/adminlogin", async (req, res) => {
         const validPassword = await bcrypt.compare(req.body.password, admin.password)
 
         if(!validPassword){
-            return res.status(400).send.json({messege: "invalid password"})
+            return res.status(400).json({messege: "invalid password"})
         } 
     
         const token = jwt.sign({_id: admin._id}, process.env.TOKEN_SECRET)
