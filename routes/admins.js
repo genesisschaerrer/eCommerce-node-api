@@ -51,8 +51,9 @@ router.post("/adminlogin", async (req, res) => {
         } 
     
         const token = jwt.sign({_id: admin._id}, process.env.TOKEN_SECRET)
-
-        res.header("auth-token", token).cookie("auth-token", token, {httpOnly: true, secure: true, sameSite: "none"}).status(200).send(token)
+        
+        res.cookie("auth-token", token, {httpOnly: true, secure: true, sameSite: "none"})
+        res.header("auth-token", token).status(200).send(token)
         //res.cookie("login-cookie", token)
     
 })
