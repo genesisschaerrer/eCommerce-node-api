@@ -21,7 +21,8 @@ db.once("open", () => console.log("Conneceted to Database"))
 app.use(cors({
     exposedHeaders: "auth-token",
     origin: ["https://gms-ecommerce-client-react.herokuapp.com", "http://localhost:3000"],
-    allowedHeaders: "Access-Control-Allow-Origin"
+    allowedHeaders: ["Access-Control-Allow-Origin", "Content-Type", "Cookies"],
+    credentials: true
 }))
 app.use(express.json())
 app.use(cookieParser())
