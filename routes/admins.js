@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 
 const Admins = require("../models/admin-model")
-const verifyToken = require("../verify-token")
+const verify = require("../verify-token")
 
 //Create new admin
 router.post("/adminschaerrer/register", async(req, res)=> {
@@ -58,22 +58,12 @@ router.post("/adminlogin", async (req, res) => {
     
 })
 
-        // fetch("/wshea", {
-        //     method: "POST",
-        //     headers: {
-        //         "auth-token": localStorage.get("auth-token")
-        //     }
-        // })
+router.get("/check-login", verify, (req, res) => {
+    res.json({messege: "logged in"})
+})
 
-        // fetch("/login", {
-        //     method: "POST",
-        //     body: JSON.stringify({ email: "kaldsjf;s", password: "dkjfsldkajf"})
-        // })
-        //  .then(res => {
-        //     localStorage.set(res.headers["auth-token"])
-        //  } )
-        //  .then()
-// fetch("/login", {method: "post", body: JSON.stringify({ email: this.state.email })}).then(res => document.cookie = `token=${res.headers.auth-token}`;
-
+router.delete("/logout", (req, res) => {
+    res.clearCookie("auth-token").status(200).json({messege: "Logged Out"})
+})
 
 module.exports = router
