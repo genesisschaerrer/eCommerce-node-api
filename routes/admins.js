@@ -33,6 +33,7 @@ router.delete("/adminschaerrer/delete/:id", async(req, res) => {
             res.status(200).json({messege: `${admin.username} has been deleted as an admin`})
         }
     })
+
 })
 
 //Login
@@ -50,6 +51,12 @@ router.post("/adminlogin", async (req, res) => {
         } 
     
         const token = jwt.sign({_id: admin._id}, process.env.TOKEN_SECRET)
+
+        res.header("auth-token", token).send(token)
+        //res.cookie("login-cookie", token)
+    
+})
+
         // fetch("/wshea", {
         //     method: "POST",
         //     headers: {
@@ -65,11 +72,6 @@ router.post("/adminlogin", async (req, res) => {
         //     localStorage.set(res.headers["auth-token"])
         //  } )
         //  .then()
-
-        res.header("auth-token", token).send(token)
-    
-})
-
 // fetch("/login", {method: "post", body: JSON.stringify({ email: this.state.email })}).then(res => document.cookie = `token=${res.headers.auth-token}`;
 
 
