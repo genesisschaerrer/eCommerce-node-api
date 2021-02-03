@@ -7,7 +7,7 @@ const Admins = require("../models/admin-model")
 const verify = require("../verify-token")
 
 //Create new admin
-router.post("/adminschaerrer/register", async(req, res)=> {
+router.post("/register", verify, async(req, res)=> {
     const salt = await bcrypt.genSalt()
     const hashedPassword = await bcrypt.hash(req.body.password, salt)
 
