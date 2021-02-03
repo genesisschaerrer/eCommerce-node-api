@@ -2,8 +2,8 @@ const express = require("express")
 const router = express.Router()
 
 const stripe = require("stripe")(process.env.STRIPE_KEY)
-// const uuid = require("uuid/v4")
-const { v4: uuidv4 } = require('uuid')
+
+// const { v4: uuidv4 } = require('uuid')
 
 const Products = require("../models/product-model")
 const verify = require("../verify-token")
@@ -107,34 +107,35 @@ router.delete("/product/:id", verify, getProduct, async (req, res) => {
 })
 
 //Stripe
-router.post("/payment", async (req, res) => {
-    try{
-        const {purchaseAmount, token} = req.body
-        console.log("Purchase Amount: ", purchaseAmount)
-        const idempontencyKey = uuidv4()
+// router.post("/payment", async (req, res) => {
+//     try{
+//         const {purchaseAmount, token} = req.body
+//         console.log("Purchase Amount: ", purchaseAmount)
+//         const idempontencyKey = uuidv4()
 
-        return stripe.customers.create({
-            email: token.email,
-            source: token.id
-        }).then(custumer => {
-            stripe.charges.create({
-                amount: purchaseAmount * 100,
-                currency: "usd",
-                custumer: custumer.id,
-                receipt_email: token.email,
-                shipping: {
-                    name: token.card.name,
-                    address: {
-                        country: token.card.address_country
-                    }
-                }
-            }, {idempontencyKey})
-        }).then(result => res.status(200).json(result))
+//         return stripe.customers.create({
+//             email: token.email,
+//             source: token.id
+//         }).then(custumer => {
+//             stripe.charges.create({
+//                 amount: purchaseAmount * 100,
+//                 currency: "usd",
+//                 custumer: custumer.id,
+//                 receipt_email: token.email,
+//                 shipping: {
+//                     name: token.card.name,
+//                     address: {
+//                         country: token.card.address_country
+//                     }
+//                 }
+//             }, {idempontencyKey})
+//         }).then(result => res.status(200).json(result))
         
-    } catch (error){
-        res.status(400).json({message: error.message})
-    }
-})
+//     } catch (error){
+//         res.status(400).json({message: error.message})
+//     }
+// })
+
 
 //this middleware function allows me to grab the product by id
 async function getProduct (req, res, next) {
