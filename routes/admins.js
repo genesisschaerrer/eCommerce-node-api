@@ -16,7 +16,7 @@ router.post("/register", verify, async(req, res)=> {
         email: req.body.email,
         password: hashedPassword
     })
-    try {
+    try {  
         const newAdmin = await admin.save()
         res.status(200).json(newAdmin)
     } catch (error) {
@@ -52,7 +52,7 @@ router.post("/adminlogin", async (req, res) => {
     
         const token = jwt.sign({_id: admin._id}, process.env.TOKEN_SECRET)
         
-        res.cookie("auth-token", token, {httpOnly: true, secure: true, sameSite: "none"})
+        // res.cookie("auth-token", token, {httpOnly: true, secure: true, sameSite: "none"})
         res.header("auth-token", token).status(200).send(token)
         //res.cookie("login-cookie", token)
     
