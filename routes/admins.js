@@ -58,9 +58,9 @@ router.post("/adminlogin", async (req, res) => {
     
 })
 
-router.get("/check-login", verify, (req, res) => {
-    res.json({messege: "logged in"})
-})
+// router.get("/check-login", verify, (req, res) => {
+//     res.json({messege: "logged in"})
+// })
 
 router.delete("/logout", (req, res) => {
     res.clearCookie("auth-token").status(200).json({messege: "Logged Out"})
